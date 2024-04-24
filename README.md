@@ -1,2 +1,5 @@
 # SegVir
-Reconstruction of complete segmented RNA viral genomes from metatranscriptomes
+SegVir is a tool to identify segmented RNA viruses and reconstruct their complete genomes from metatranscriptomes.
+
+## Supporting data
+
