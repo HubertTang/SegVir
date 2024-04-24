@@ -3,3 +3,4 @@ SegVir is a tool to identify segmented RNA viruses and reconstruct their complet
 
 ## Supporting data
 
+The `supp_data` directory saves the identified segmented RNA viral contigs from `Missing segment datasets` and `Real metatranscriptomes`.
