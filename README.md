@@ -45,23 +45,23 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 
  more optional arguments:
 
-   --database: The database directory. (Use the absolute path to specify the location of the database. Default: SegVir/segvir_db)
+   `--database`: The database directory. (Use the absolute path to specify the location of the database. Default: SegVir/segvir_db)
 
-   --min_len: The minimal length of the contigs (default: 300nt).
+   `--min_len`: The minimal length of the contigs (default: 300nt).
 
-   --host: Path of the host genome. (The path can be a fasta file or a directory containing the genomes.)
+   `--host`: Path of the host genome. (The path can be a fasta file or a directory containing the genomes.)
 
-   --blastp: The minimun e-value of BLASTP (default: 1e-5).
+   `--blastp`: The minimun e-value of BLASTP (default: 1e-5).
 
-   --hmmer: The minimun e-value of HMMER (default: 1e-5).
+   `--hmmer`: The minimun e-value of HMMER (default: 1e-5).
 
-   --rdrp_evalue: The minimun e-value of identified RdRp (default: 1e-10).
+   `--rdrp_evalue`: The minimun e-value of identified RdRp (default: 1e-10).
 
-   --rdrp_len: The minimun length of identified RdRp (default: 900bp).
+   `--rdrp_len`: The minimun length of identified RdRp (default: 900bp).
 
-   --tempdir: The temporary directory (default: \<outdir>/temp).
+   `--tempdir`: The temporary directory (default: \<outdir>/temp).
 
-   -t, --thread: The number of threads (default: 8).
+   `-t`, `--thread`: The number of threads (default: 8).
 
 ## Outputs
 
