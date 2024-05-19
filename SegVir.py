@@ -329,7 +329,7 @@ def run_segvir_aln(contig_path, host_db_path, ref_dir, temp_dir, threads=8, len_
 
     # Step 2: run HMMER
     print(f"Run HMMER ... ...")
-    run_hmm(hmm_path=f"{ref_dir}/seg_non_seg.temp.hmm",
+    run_hmm(hmm_path=f"{ref_dir}/seg_non_seg.hmm",
             prot_path=contig_aa_path,
             out_path=f"{temp_dir}/hmm",
             num_thread=threads)
