@@ -1,5 +1,5 @@
 # SegVir
-SegVir is a tool to identify segmented RNA viruses and reconstruct their complete genomes from metatranscriptomes.
+SegVir is designed to identify and reconstruct complete genomes of segmented RNA viruses from complex metatranscriptomic data. The tool utilizes both close and remote homology searches to detect conserved and divergent viral segments, and introduces a new method to evaluate genome completeness based on protein clusters with similar functions.
 
 ## Required Dependencies
 
@@ -8,7 +8,6 @@ SegVir is a tool to identify segmented RNA viruses and reconstruct their complet
 * blast
 * hmmer
 * biopython
-* numpy
 * pandas
 
 ## Quick install (Linux only)
@@ -29,11 +28,9 @@ SegVir is a tool to identify segmented RNA viruses and reconstruct their complet
    conda activate segvir
    ```
 
-
-
 3. Download the reference database
 
-   Download the reference database (293MB) manually from [OneDrive](https://portland-my.sharepoint.com/:u:/g/personal/xubotang2-c_my_cityu_edu_hk/EYRIkHnE58xIrWH1tBzPl_MBK0DNx4YfIf8IVhpmwUzk4g?e=iTSiDY) to the same directory with `SegVir.py` and uncompress it.
+   Download the reference database (293MB) from [OneDrive](https://portland-my.sharepoint.com/:u:/g/personal/xubotang2-c_my_cityu_edu_hk/EYRIkHnE58xIrWH1tBzPl_MBK0DNx4YfIf8IVhpmwUzk4g?e=iTSiDY) to the same directory with `SegVir.py` and uncompress it.
 
 ## Usage
 
@@ -47,7 +44,7 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 
    `--database`: The database directory. (Use the absolute path to specify the location of the database. Default: SegVir/segvir_db)
 
-   `--min_len`: The minimal length of the contigs (default: 300nt).
+   `--min_len`: The minimal length of the contigs (default: 300bp).
 
    `--host`: Path of the host genome. (The path can be a fasta file or a directory containing the genomes.)
 
@@ -70,7 +67,7 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 | Files            | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
 | segvir.fna       | Fasta file of all identified segmented RNA virus genomes     |
-| segvir.csv       | Report file of the description of the identified segmented RNA virus genomes |
+| segvir.csv       | Report file of the details of the identified segmented RNA virus genomes |
 | segvir.score.csv | Report file of the completeness and conservation score of the identified viral genomes |
 
 ### Output report format
@@ -78,7 +75,7 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 | `segvir.csv` | Description                                           |
 | ------------ | ----------------------------------------------------- |
 | family       | Family of the identified contig                       |
-| contig       | Contig ID                                             |
+| contig       | The ID of the contig                                  |
 | length       | The length of the contig                              |
 | method       | The identification methods (Diamond/ HMMER)           |
 | coordinate   | The coordinate of the identified gene                 |

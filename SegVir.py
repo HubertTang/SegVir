@@ -56,7 +56,7 @@ def split_fasta(fasta_file, num_split=10):
 def orffinder(dna_path):
     """Run ORFfinder.
     """
-    subprocess.run(f"./bin/ORFfinder -n True -in {dna_path} -out {dna_path}.aa", shell=True)
+    subprocess.run(f"./ORFfinder -n True -in {dna_path} -out {dna_path}.aa", shell=True)
 
 
 def run_multi_orffinder(contig_path, threads=32):
@@ -88,7 +88,7 @@ def run_multi_orffinder(contig_path, threads=32):
 def run_diamond(contig_path, db_path, diamond_out, temp_dir, num_thread=56):
     """Run DIAMOND BLASTx.
     """
-    subprocess.run(f"./bin/diamond blastp --threads {num_thread} -d {db_path} -q {contig_path} -o {diamond_out} --sensitive -c1 --tmpdir {temp_dir}", shell=True)
+    subprocess.run(f"diamond blastp --threads {num_thread} -d {db_path} -q {contig_path} -o {diamond_out} --sensitive -c1 --tmpdir {temp_dir}", shell=True)
 
 
 def parse_diamond(diamond_out_path, e_thres=0.001):
@@ -329,10 +329,17 @@ def run_segvir_aln(contig_path, host_db_path, ref_dir, temp_dir, threads=8, len_
 
     # Step 2: run HMMER
     print(f"Run HMMER ... ...")
-    run_hmm(hmm_path=f"{ref_dir}/seg_non_seg.hmm",
+    run_hmm(hmm_path=f"{ref_dir}/seg_non_seg.temp.hmm",
             prot_path=contig_aa_path,
             out_path=f"{temp_dir}/hmm",
             num_thread=threads)
+    
+    # # if `consise_rst=True`, keep the contigs with the smallest e-value
+    # if consise_rst:
+    #     pass
+    # else:
+    #     os.rename(f'{temp_dir}/contig.temp.diamond', f'{temp_dir}/contig.diamond')
+    #     os.rename(f'{temp_dir}/hmm.temp.tblout', f'{temp_dir}/hmm.temp.tblout')
 
 
 def segvir_parse_rst(contig_path, ref_dir, temp_dir, blastp_evalue=1e-5, hmmer_evalue=1e-5, host_ratio_thres=0.84,
