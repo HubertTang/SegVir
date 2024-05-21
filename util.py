@@ -77,7 +77,13 @@ def cmd_segvir():
         default=900,
         type=float,
         help="The minimun length of identified RdRp  (default: 900bp).")
-    
+
+    parser.add_argument(
+        "--vote_thres",
+        default=0.85,
+        type=float,
+        help="Multiply the best hit's bitscore by this parameter as the threshold, and determine the taxonomy by majority voting on the results above the threshold.  (default: 0.85).")
+
     parser.add_argument(
         '-t', "--thread",
         default=8,
@@ -89,6 +95,16 @@ def cmd_segvir():
         type=str,
         default='temp',
         help="The temporary directory (default: <outdir>/temp)."
+        )
+
+    parser.add_argument(
+        "--outfmt",
+        type=int,
+        default=1,
+        help="The output format of identified viral genomes (default: 1).\
+            1: save all the sequences in a file.\
+            2: save the sequences by families.\
+            3. save the sequences by families and RdRp."
         )
 
     # version
