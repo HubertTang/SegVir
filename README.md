@@ -30,7 +30,7 @@ SegVir is designed to identify and reconstruct complete genomes of segmented RNA
 
 3. Download the reference database
 
-   Download the reference database (293MB) from [OneDrive](https://portland-my.sharepoint.com/:u:/g/personal/xubotang2-c_my_cityu_edu_hk/EYRIkHnE58xIrWH1tBzPl_MBK0DNx4YfIf8IVhpmwUzk4g?e=iTSiDY) to the same directory with `SegVir.py` and uncompress it.
+   Download the reference database (226MB) from [OneDrive](https://portland-my.sharepoint.com/:u:/g/personal/xubotang2-c_my_cityu_edu_hk/EYRIkHnE58xIrWH1tBzPl_MBK0DNx4YfIf8IVhpmwUzk4g?e=iTSiDY) to the same directory with `SegVir.py` and uncompress it.
 
 ## Usage
 
@@ -41,6 +41,10 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 ```
 
  more optional arguments:
+
+   `--input`: (***REQUIRED***) Path of the query contigs (in 'fasta' format).
+
+   `--outdir`: (***REQUIRED***) Directory to store results. The directory will be created if it does not exist.
 
    `--database`: The database directory. (Use the absolute path to specify the location of the database. Default: SegVir/segvir_db)
 
@@ -58,6 +62,10 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 
    `--tempdir`: The temporary directory (default: \<outdir>/temp).
 
+   `--vote_thres`: Multiply the best hit's bitscore by this parameter as the threshold, and determine the taxonomy by majority voting on the results above the threshold.  (default: 0.85).
+
+   `--outfmt`: The output format of identified viral genomes (default: 1). 1: save the identified genomes in a file; 2: save the identified genomes by families; 3. save the identified genomes by families and RdRp."
+
    `-t`, `--thread`: The number of threads (default: 8).
 
 ## Outputs
@@ -72,20 +80,21 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 
 ### Output report format
 
-| `segvir.csv` | Description                                           |
-| ------------ | ----------------------------------------------------- |
-| family       | Family of the identified contig                       |
-| contig       | The ID of the contig                                  |
-| length       | The length of the contig                              |
-| method       | The identification methods (Diamond/ HMMER)           |
-| coordinate   | The coordinate of the identified gene                 |
-| evalue       | The corresponding e-value of Diamond/ HMMER           |
-| taxon        | The putative taxonomy of the contigs in species level |
-| function     | The function of the identified gene                   |
+| `segvir.csv` | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| family       | The taxon of identified contig in the family level           |
+| contig       | The ID of the contig                                         |
+| length       | The length of the contig                                     |
+| gene_coor    | The coordinate of the identified gene                        |
+| blastp_e     | The e-value outputted by Diamond BLASTp                      |
+| hmmer_e      | The e-value outputted by HMMER                               |
+| ref_name     | The organism name of the aligned reference sequence using BLASTp. |
+| function     | The function of the aligned reference sequence/ function cluster |
+| fc           | The ID of the aligned function cluster                       |
 
 | `segvir.score.csv` | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
-| family             | Family                                                       |
+| family             | Family of the identified segmented RNA genomes               |
 | completeness       | The estimated completeness of the identified viral genome    |
 | cs                 | The conservation score of the identified viral genome        |
 | ref_cs             | The reference conservation score of the closet reference genome |
@@ -93,8 +102,10 @@ python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 ## Example
 
 ```bash
-python SegVir.py --input example/test.fna --outdir example/out
+python SegVir.py --input example/test.fna --outdir example/out --host example/ref_hosts.fna
 ```
+
+Identify the segmented RNA viruses from  `test.fna` in `example` directory. The host genomes is saved in `example/ref_hosts.fna` and the results will be saved in `example/out`. 
 
 ## Supporting data
 

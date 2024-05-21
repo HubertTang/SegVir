@@ -14,6 +14,14 @@ import collections
 FAMILY_LIST = util.seg_family()
 
 
+def build_refdb(refdb_path, num_threads):
+    """Initial database when used for the first time.
+    """
+    if not os.path.exists(f"{refdb_path}/ref.dmnd"):
+        print("Pre-build the reference database ... ...")
+        subprocess.run(f"diamond makedb --in {refdb_path}/ref.faa -d {refdb_path}/ref -p {num_threads}", shell=True)
+
+
 def build_host_db(host_path, temp_dir):
     """Check if the database is complete and build the host database.
     """
@@ -591,10 +599,19 @@ def segvir_parse_rst(contig_path, ref_dir, temp_dir, blastp_evalue=1e-5, hmmer_e
                 orf_e = max(int(prot_id.split(':')[-2]), int(prot_id.split(':')[-1]))
                 blastp_e = diamond_best_dict[prot_id][1]
                 hmmer_e = hmm_best_dict[prot_id][1]
+                # filter the result by e-values of BLASTp and HMMER
                 if blastp_e > blastp_evalue and hmmer_e > hmmer_evalue:
                     continue
                 virus_name = diamond_best_dict[prot_id][3]
                 func = hmm_best_dict[prot_id][4]
+                # filter the RdRps
+                if any(i in func.lower() for i in ['rdrp', 'polymerase']):
+                    if blastp_e > rdrp_evalue and hmmer_e > rdrp_evalue:
+                        continue
+                    else:
+                        if contig_len < rdrp_len:
+                            continue
+                
                 fc_id = hmm_best_dict[prot_id][3]
                 if virus_name.lower() in vir_single_set:
                     if blastp_e <= 1e-25:
@@ -613,6 +630,13 @@ def segvir_parse_rst(contig_path, ref_dir, temp_dir, blastp_evalue=1e-5, hmmer_e
             hmmer_e = '*'
             virus_name = diamond_best_dict[prot_id][3]
             func = singleton2func_dict[diamond_best_dict[prot_id][4]][1]
+            # filter the RdRps
+            if any(i in func.lower() for i in ['rdrp', 'polymerase']):
+                if blastp_e > rdrp_evalue:
+                    continue
+                else:
+                    if contig_len < rdrp_len:
+                        continue
             fc_id = '*'
             if virus_name.lower() in vir_single_set:
                 if blastp_e <= 1e-25:
@@ -631,6 +655,13 @@ def segvir_parse_rst(contig_path, ref_dir, temp_dir, blastp_evalue=1e-5, hmmer_e
                 continue
             virus_name = '*'
             func = hmm_best_dict[prot_id][4]
+            # filter the RdRps
+            if any(i in func.lower() for i in ['rdrp', 'polymerase']):
+                if hmmer_e > rdrp_evalue:
+                    continue
+                else:
+                    if contig_len < rdrp_len:
+                        continue
             fc_id = hmm_best_dict[prot_id][3]
             rst_out.write(f"{fam}\t{contig_id}\t{contig_len}\t{orf_s}:{orf_e}\t{blastp_e}\t{hmmer_e}\t{virus_name}\t{func}\t{fc_id}\n")
     
@@ -708,7 +739,7 @@ def segvir_parse_rst(contig_path, ref_dir, temp_dir, blastp_evalue=1e-5, hmmer_e
             if fam in fam_singleton_dict:
                 num_singleton = len(fam_singleton_dict[fam])
             completeness = min(1.0, (len(fc_set) + num_singleton)/ len(nearest_fc_set))
-            print(nearest_fc_set, ref_cs, completeness)
+            # print(nearest_fc_set, ref_cs, completeness)
 
             # calculate the conservation score
             rdrp_score = []
@@ -729,7 +760,7 @@ def segvir_parse_rst(contig_path, ref_dir, temp_dir, blastp_evalue=1e-5, hmmer_e
                 fc_set_weights = max(rdrp_score)
             else:
                 fc_set_weights = max(non_rdrp_score)
-            print(fc_set_weights)
+            # print(fc_set_weights)
 
             final_score_out.write(f"{fam}\t{completeness}\t{fc_set_weights}\t{ref_cs}\n")
 
@@ -859,6 +890,10 @@ if __name__ == "__main__":
         host_path = segvir_args.host
     # set the number of threads
     number_threads = segvir_args.thread
+
+    # pre-build the reference database
+    build_refdb(refdb_path=ref_db_path, 
+                num_threads=number_threads)
 
     for d in [output_dir, temp_dir]:
         if not os.path.exists(d):
