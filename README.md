@@ -24,27 +24,33 @@ SegVir is designed to identify and reconstruct complete genomes of segmented RNA
    ```bash
    # install the plasme
    conda env create -f segvir.yaml
+   # install ORFfinder
+   conda activate segvir
+   bash install_orffinder.sh
+   conda deactivate
    # activate the environment
    conda activate segvir
    ```
 
 3. Download the reference database
 
-   Download the reference database (226MB) from [OneDrive](https://portland-my.sharepoint.com/:u:/g/personal/xubotang2-c_my_cityu_edu_hk/EYRIkHnE58xIrWH1tBzPl_MBK0DNx4YfIf8IVhpmwUzk4g?e=iTSiDY) to the same directory with `SegVir.py` and uncompress it.
+   Download the reference database (226MB) from [OneDrive](https://portland-my.sharepoint.com/:u:/g/personal/xubotang2-c_my_cityu_edu_hk/EYRIkHnE58xIrWH1tBzPl_MBK0DNx4YfIf8IVhpmwUzk4g?e=iTSiDY) to the same directory with `SegVir.py` and uncompress it. If you uncompress the database somewhere else, please specify that path in `--database`.
 
 ## Usage
 
-SegVir requires input assembled contigs in Fasta format, and outputs include the sequences and detailed information of the identified segmented RNA virus genomes.
+SegVir requires input assembled contigs in fasta format, and outputs include the sequences and detailed information of the identified segmented RNA virus genomes.
 
 ```bash
 python SegVir.py --input [INPUT_CONTIG] --outdir [OUTPUT_DIRECTORY] [OPTIONS]
 ```
 
- more optional arguments:
+Required arguments: 
 
-   `--input`: (***REQUIRED***) Path of the query contigs (in 'fasta' format).
+   `--input`: Path of the query contigs (in 'fasta' format).
 
-   `--outdir`: (***REQUIRED***) Directory to store results. The directory will be created if it does not exist.
+   `--outdir`: Directory to store results. The directory will be created if it does not exist.
+
+ More optional arguments:
 
    `--database`: The database directory. (Use the absolute path to specify the location of the database. Default: SegVir/segvir_db)
 
