@@ -13,3 +13,4 @@ EOF
 
 #Modify the permissions of ORFfinder
 chmod a+x ORFfinder
+echo ORFfinder Installed.
