@@ -156,6 +156,46 @@ python SegVir_polish.py --tempdir example/out/temp --outdir example/out_polish -
 
 Polish the results of the first use of using `SegVir.py` to identify segmented RNA viral genomes in  `example/test.fna`. The polished results will be saved in `example/out_polish`.
 
+## (Optional) Calculate the Pearson correlation coefficient of coverage distributions between non-RdRp and RdRp contigs
+
+The script `SegVir_cov_dist.py` can calculate the correlation (Pearson correlation coefficient) between non-RdRp contigs and RdRp contigs by using the coverage distribution of contigs across multiple samples. To do this, you need to install `coverm` using the following command:
+
+```bash
+conda install coverm
+```
+
+The usage of the script is:
+
+```bash
+python SegVir_cov_dist.py --rst_dir [RST_DIR] --reads_path [READS_PATH] --out_rst [OUT_RST] --temp_dir [TEMP_DIR]
+```
+
+Required arguments: 
+
+`--rst_dir`: the path of the directory for the results generated using `--outfmt 3`.
+
+`--reads_path`: file storing the path of sequencing samples.
+
+If it is single-end reads, the file format is as follows:
+
+```
+read/path/1
+read/path/2
+... ...
+```
+
+If it is pair-end reads, the file format is as follows:
+
+```
+read/path/1_1,read/path/1_2
+read/path/2_1,read/path/2_2
+... ...
+```
+
+`-out_rst`: the path of output results.
+
+`--temp_dir`: the temporary directory.
+
 ## Supporting data
 
 The `supp_data` directory saves the identified segmented RNA viral contigs from `Missing segment datasets` and `Real metatranscriptomes`.
