@@ -218,17 +218,10 @@ def cmd_segvir_cov():
     parser = argparse.ArgumentParser(description="SegVir: identify \033[4mSeg\033[0mmented rna \033[4mVir\033[0muses and reconstruct their complete genomes from metatranscriptomes.")
 
     parser.add_argument(
-        '--rdrp',
+        '--rst_dir',
         type=str,
         required=True, 
-        help="Path of the RdRp contigs (in 'fasta' format)."
-    )
-
-    parser.add_argument(
-        '--non_rdrp',
-        type=str,
-        required=True, 
-        help="Path of the non-RdRp contigs (in 'fasta' format)."
+        help="Path of the output RdRp and non-RdRp contigs (in 'fasta' format)."
     )
 
     parser.add_argument(
@@ -236,6 +229,20 @@ def cmd_segvir_cov():
         type=str,
         required=True, 
         help="File storing the path of metagenomic samples."
+    )
+
+    parser.add_argument(
+        '--out_rst',
+        type=str,
+        required=True, 
+        help="The path of output results."
+    )
+
+    parser.add_argument(
+        '--temp_dir',
+        type=str,
+        required=True, 
+        help="The temporary directory."
     )
 
     # version
