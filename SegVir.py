@@ -780,10 +780,12 @@ def segvir_output(temp_dir, out_dir, outfmt=1):
             host_coor_dict[query] = list(merge_range(host_coor_dict[query] + [(aln_s, aln_e)]))
 
     candidate_rst = f"{temp_dir}/host_overlap.ratio.csv"
-    overlap_df = pd.read_csv(candidate_rst, sep='\t', header=None)
     overlap_dict = {}
-    for contig_id, overlap in zip(overlap_df[0], overlap_df[1]):
-        overlap_dict[contig_id] = overlap
+    # print(os.path.getsize(candidate_rst))
+    if os.path.getsize(candidate_rst) > 0:
+        overlap_df = pd.read_csv(candidate_rst, sep='\t', header=None)
+        for contig_id, overlap in zip(overlap_df[0], overlap_df[1]):
+            overlap_dict[contig_id] = overlap
 
     # load the results of SegVir
     segvir_df = pd.read_csv(f"{out_dir}/segvir.csv", sep='\t')
